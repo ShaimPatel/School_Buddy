@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_buddy/Home_Pages/drawer_page.dart';
+import 'package:like_button/like_button.dart';
+import 'package:school_buddy/Widgets/like_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,6 +16,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isLiked = false;
+  final double size = 20;
   List<dynamic> schoollist = [];
 // ! There are GetData From server...
   Future<dynamic> _schoolDetails() async {
@@ -46,7 +50,7 @@ class _HomePageState extends State<HomePage> {
     elevation: 0,
     title: Image.asset(
       'assets/splash.png',
-      height: 30.0,
+      height: 40.0,
       width: 100,
     ),
   );
@@ -289,8 +293,23 @@ class _HomePageState extends State<HomePage> {
                                                     .width *
                                                 0.55,
                                             alignment: Alignment.bottomRight,
-                                            child: const Icon(
-                                                Icons.favorite_border_outlined),
+                                            child: LikeButton(
+                                              size: size,
+                                              isLiked: isLiked,
+                                              likeBuilder: (isLiked) {
+                                                final color = isLiked
+                                                    ? Colors.red
+                                                    : Colors.grey;
+                                                return Icon(
+                                                  Icons.favorite,
+                                                  color: color,
+                                                  size: size,
+                                                );
+                                              },
+                                              onTap: (isLiked) {
+                                                return _sendLikeData();
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -309,5 +328,14 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  _sendLikeData() {
+    // print(schoollist[0]['id']);
+    // var data ={
+    //   'userId' = schoollist[0]['user_id'],
+    //   'schoolId' = schoollist[0]['id'],
+    //   'isLike' =schoollist[0]['is_like'],
+    // };
   }
 }

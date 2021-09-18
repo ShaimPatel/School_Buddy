@@ -1,33 +1,36 @@
 // To parse this JSON data, do
 //
-//     final sendData = sendDataFromJson(jsonString);
+//     final sendDataFromJson = sendDataFromJsonFromJson(jsonString);
 
 import 'dart:convert';
 
-SendData sendDataFromJson(String str) => SendData.fromJson(json.decode(str));
+SendDataFromJson sendDataFromJsonFromJson(String str) =>
+    SendDataFromJson.fromJson(json.decode(str));
 
-String sendDataToJson(SendData data) => json.encode(data.toJson());
+String sendDataFromJsonToJson(SendDataFromJson data) =>
+    json.encode(data.toJson());
 
-class SendData {
-  SendData({
+class SendDataFromJson {
+  SendDataFromJson({
     required this.name,
     required this.password,
     required this.email,
-    required this.partnerId,
+    required this.schoolId,
     required this.contactNumber,
   });
 
   String name;
   String password;
   String email;
-  String partnerId;
+  String schoolId;
   String contactNumber;
 
-  factory SendData.fromJson(Map<String, dynamic> json) => SendData(
+  factory SendDataFromJson.fromJson(Map<String, dynamic> json) =>
+      SendDataFromJson(
         name: json["name"],
         password: json["password"],
         email: json["email"],
-        partnerId: json["partner_id"],
+        schoolId: json["school_id"],
         contactNumber: json["contact_number"],
       );
 
@@ -35,7 +38,7 @@ class SendData {
         "name": name,
         "password": password,
         "email": email,
-        "partner_id": partnerId,
+        "school_id": schoolId,
         "contact_number": contactNumber,
       };
 }
