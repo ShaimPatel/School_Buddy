@@ -250,7 +250,6 @@ class _LoginWidgetState extends State<LoginWidget> {
       //   [jsonData['user']['id'], jsonData['user']['user_id']],
       // );
       final id = jsonData['user']['id'];
-      final userId = jsonData['user']['user_id'];
       final email = jsonData['user']['email'];
       if (jsonData['success']) {
         setState(() {
@@ -262,7 +261,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             MaterialPageRoute(
               builder: (context) => const HomePage(),
               settings: RouteSettings(
-                arguments: {'id': id, 'user_id': userId, 'email': email},
+                arguments: {'id': id, 'email': email},
               ),
             ),
           );

@@ -16,12 +16,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final id;
+  // late int _selectedIndex;
+  List<dynamic> btnState = [];
   late final userid;
   late final email;
   bool isLiked = false;
   final double size = 20;
   List<dynamic> schoollist = [];
+
 // ! There are GetData From server...
   Future<dynamic> _schoolDetails() async {
     String url =
@@ -34,6 +36,11 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         if (list['success'] == true && list['message'] == "School found") {
           schoollist = list['data'];
+          // setting all button like state to 0
+          btnState.length = schoollist.length;
+          for (var i = 0; i < schoollist.length; i++) {
+            btnState[i] = false;
+          }
         }
         // setState(() {});
       });
@@ -42,6 +49,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+//! Init  shoolDetails...
   @override
   void initState() {
     super.initState();
@@ -61,9 +69,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final Map argument = ModalRoute.of(context)!.settings.arguments as Map;
-    final id = argument['id'].toString();
-    final userid = argument['user_id'].toString();
+    final userid = argument['id'].toString();
     final email = argument['email'].toString();
+    print(userid + " =" + email);
+
     var allHeight =
         MediaQuery.of(context).size.height - appbar.preferredSize.height;
     var allWidth = MediaQuery.of(context).size.width;
@@ -300,21 +309,23 @@ class _HomePageState extends State<HomePage> {
                                                     .width *
                                                 0.55,
                                             alignment: Alignment.bottomRight,
-                                            child: LikeButton(
-                                              size: size,
-                                              isLiked: isLiked,
-                                              likeBuilder: (isLiked) {
-                                                final color = isLiked
-                                                    ? Colors.red
-                                                    : Colors.grey;
-                                                return Icon(
-                                                  Icons.favorite,
-                                                  color: color,
-                                                  size: size,
-                                                );
-                                              },
-                                              onTap: (isLiked) {
-                                                return _sendLikeData();
+                                            child: IconButton(
+                                              icon: const Icon(
+                                                Icons.favorite,
+                                              ),
+                                              color: (btnState[index] == false)
+                                                  ? Colors.grey
+                                                  : Colors.red,
+                                              onPressed: () {
+                                                setState(() {
+                                                  btnState[index] =
+                                                      (btnState[index] == false)
+                                                          ? true
+                                                          : false;
+                                                });
+                                                _onSelected(
+                                                    schoollist[index]['id'],
+                                                    btnState[index]);
                                               },
                                             ),
                                           ),
@@ -337,12 +348,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _sendLikeData() {
-    // print(schoollist[0]['id']);
-    // var data ={
-    //   'userId' = schoollist[0]['user_id'],
-    //   'schoolId' = schoollist[0]['id'],
-    //   'isLike' =schoollist[0]['is_like'],
-    // };
+  _onSelected(int index, bool state) {
+    print(index);
   }
 }
