@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_buddy/Home_Pages/drawer_page.dart';
 import 'package:like_button/like_button.dart';
-import 'package:school_buddy/Widgets/like_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,6 +16,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late final id;
+  late final userid;
+  late final email;
   bool isLiked = false;
   final double size = 20;
   List<dynamic> schoollist = [];
@@ -57,6 +60,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Map argument = ModalRoute.of(context)!.settings.arguments as Map;
+    final id = argument['id'].toString();
+    final userid = argument['user_id'].toString();
+    final email = argument['email'].toString();
     var allHeight =
         MediaQuery.of(context).size.height - appbar.preferredSize.height;
     var allWidth = MediaQuery.of(context).size.width;

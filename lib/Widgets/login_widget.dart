@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:school_buddy/Home_Pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -19,6 +20,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   bool _isLoading = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
   TextStyle defaultStyle =
       GoogleFonts.workSans(color: Colors.black, fontSize: 15.0);
   TextStyle linkStyle = GoogleFonts.workSans(color: Colors.blue);
@@ -231,8 +233,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     );
   }
 
-  void _sendLoginData(
-      String _emailController, String _passwordController) async {
+  _sendLoginData(String _emailController, String _passwordController) async {
     const String url =
         'https://scsy.in/schoolbuddy/schoolbuddy/public/api/App/signin';
 
@@ -241,21 +242,31 @@ class _LoginWidgetState extends State<LoginWidget> {
       'email': _emailController,
     };
     var jsonData = null;
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var Response = await http.post(Uri.parse(url), body: data);
     if (Response.statusCode == 200) {
       jsonData = jsonDecode(Response.body);
+      // print(
+      //   [jsonData['user']['id'], jsonData['user']['user_id']],
+      // );
+      final id = jsonData['user']['id'];
+      final userId = jsonData['user']['user_id'];
+      final email = jsonData['user']['email'];
       if (jsonData['success']) {
         setState(() {
           _isLoading = false;
-          sharedPreferences.setString("token", jsonData['token']);
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => const HomePage(),
-          //   ),
-          // );
-          Navigator.pushReplacementNamed(context, '/homePage');
+          // sharedPreferences.setString("token", jsonData['token']);
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomePage(),
+              settings: RouteSettings(
+                arguments: {'id': id, 'user_id': userId, 'email': email},
+              ),
+            ),
+          );
+          //  Navigator.pushReplacementNamed(context, '/homePage');
         });
       } else {
         return showDialog(
