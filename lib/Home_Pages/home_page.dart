@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_buddy/Home_Pages/drawer_page.dart';
-import 'package:like_button/like_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -71,7 +70,7 @@ class _HomePageState extends State<HomePage> {
     final Map argument = ModalRoute.of(context)!.settings.arguments as Map;
     final userid = argument['id'].toString();
     final email = argument['email'].toString();
-    print(userid + " =" + email);
+    //print(userid + " =" + email);
 
     var allHeight =
         MediaQuery.of(context).size.height - appbar.preferredSize.height;
@@ -300,34 +299,31 @@ class _HomePageState extends State<HomePage> {
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 2,
                                         ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 25),
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.55,
-                                            alignment: Alignment.bottomRight,
-                                            child: IconButton(
-                                              icon: const Icon(
-                                                Icons.favorite,
-                                              ),
-                                              color: (btnState[index] == false)
-                                                  ? Colors.grey
-                                                  : Colors.red,
-                                              onPressed: () {
-                                                setState(() {
-                                                  btnState[index] =
-                                                      (btnState[index] == false)
-                                                          ? true
-                                                          : false;
-                                                });
-                                                _onSelected(
-                                                    schoollist[index]['id'],
-                                                    btnState[index]);
-                                              },
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.55,
+                                          alignment: Alignment.bottomRight,
+                                          child: IconButton(
+                                            iconSize: 18.0,
+                                            icon: const Icon(
+                                              Icons.favorite,
                                             ),
+                                            color: (btnState[index] == false)
+                                                ? Colors.grey
+                                                : Colors.red,
+                                            onPressed: () {
+                                              setState(() {
+                                                btnState[index] =
+                                                    (btnState[index] == false)
+                                                        ? true
+                                                        : false;
+                                              });
+                                              _onSelected(
+                                                  schoollist[index]['id'],
+                                                  btnState[index]);
+                                            },
                                           ),
                                         ),
                                       ],
