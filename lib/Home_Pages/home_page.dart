@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_buddy/Home_Pages/drawer_page.dart';
+import 'package:school_buddy/services/liekapi.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     if (response.statusCode == 200) {
       final getDataResponse = response.body;
       var list = json.decode(getDataResponse);
-      // print(list);
+      // print(list['Like'][0]);
       setState(() {
         if (list['success'] == true && list['message'] == "School found") {
           schoollist = list['data'];
@@ -69,6 +70,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final Map argument = ModalRoute.of(context)!.settings.arguments as Map;
     final userid = argument['id'].toString();
+    print(userid);
     final email = argument['email'].toString();
     //print(userid + " =" + email);
 
@@ -322,7 +324,8 @@ class _HomePageState extends State<HomePage> {
                                               });
                                               _onSelected(
                                                   schoollist[index]['id'],
-                                                  btnState[index]);
+                                                  btnState[index],
+                                                  userid);
                                             },
                                           ),
                                         ),
@@ -344,7 +347,36 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _onSelected(int index, bool state) {
-    print(index);
+  _onSelected(int index, bool state, String userid) async {
+    // print(index);
+    var likedata = {
+      'user_id': userid,
+      'school_id': index,
+      'is_like': state,
+    };
+    var res = await SendLikeApi().postData(likedata, 'like');
+    var response = json.decode(res.body);
+    print(response);
+    if (response['success'] == true) {
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(response['message']),
+          );
+        },
+      );
+    } else {
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(response['message']),
+          );
+        },
+      );
+      // ignore: avoid_print
+      // print(body['message']);
+    }
   }
 }
