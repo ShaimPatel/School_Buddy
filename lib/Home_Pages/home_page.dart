@@ -355,8 +355,9 @@ class _HomePageState extends State<HomePage> {
       'is_like': state,
     };
     var res = await SendLikeApi().postData(likedata, 'like');
+    // print(res.body);
     var response = json.decode(res.body);
-    print(response);
+    // print(response);
     if (response['success'] == true) {
       return showDialog(
         context: context,
