@@ -15,6 +15,7 @@ class SignUpWidget extends StatefulWidget {
 }
 
 class _SignUpWidgetState extends State<SignUpWidget> {
+  bool _registerButton = false;
   //! There Are Code of registration..
   _register() async {
     var data = {
@@ -295,26 +296,43 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   ),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(72),
                       primary: HexColor("#013334"),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
                       ),
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        const SnackBar(
-                            content: Text("Registration Successfully"));
-                      }
+                    onPressed: () async {
+                      if (_registerButton) return;
+                      setState(() => _registerButton = true);
+                      await Future.delayed(const Duration(seconds: 2));
+                      setState(() => _registerButton = false);
                       _register();
                     },
-                    child: Text(
-                      'SIGN UP',
-                      style: GoogleFonts.workSans(
-                        fontSize: 18.0,
-                        color: Colors.white,
-                      ),
-                    ),
+                    child: _registerButton
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const CircularProgressIndicator(
+                                strokeWidth: 4.0,
+                                color: Colors.white,
+                              ),
+                              const SizedBox(width: 25),
+                              Text(
+                                'Please Wait..!',
+                                style:
+                                    GoogleFonts.workSans(color: Colors.white),
+                              )
+                            ],
+                          )
+                        : Text(
+                            'SIGN UP',
+                            style: GoogleFonts.workSans(
+                              fontSize: 18.0,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 ),
               ),
