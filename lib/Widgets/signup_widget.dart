@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:school_buddy/Pages/search_school.dart';
@@ -30,16 +33,24 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     var body = json.decode(res.body);
     // print(body['success'] == false);
     if (body['success'] == true) {
+      Fluttertoast.showToast(
+          msg: body['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
       Navigator.pushReplacementNamed(context, '/loginPage');
     } else {
-      return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text(body['message']),
-          );
-        },
-      );
+      return Fluttertoast.showToast(
+          msg: body['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
       // ignore: avoid_print
       // print(body['message']);
     }
@@ -48,6 +59,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   final _formKey = GlobalKey<FormState>();
   bool agree = false;
   final TextEditingController _schoolController = TextEditingController();
+  // ignore: non_constant_identifier_names
   var SchoolId;
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();

@@ -209,12 +209,12 @@ class _DrawerHomePageState extends State<DrawerHomePage> {
     switch (i) {
       case 0:
         {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomePage(),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const HomePage(),
+          //   ),
+          // );
           break;
         }
       case 1:

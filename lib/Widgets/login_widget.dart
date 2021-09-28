@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -16,6 +17,7 @@ class LoginWidget extends StatefulWidget {
 class _LoginWidgetState extends State<LoginWidget> {
   final _formKey = GlobalKey<FormState>();
   bool agree = false;
+  // ignore: unused_field
   bool _isLoading = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -240,21 +242,28 @@ class _LoginWidgetState extends State<LoginWidget> {
       'password': _passwordController,
       'email': _emailController,
     };
+    // ignore: avoid_init_to_null
     var jsonData = null;
     // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // ignore: non_constant_identifier_names
     var Response = await http.post(Uri.parse(url), body: data);
     if (Response.statusCode == 200) {
       jsonData = jsonDecode(Response.body);
-      // print(
-      //   [jsonData['user']['id'], jsonData['user']['user_id']],
-      // );
+      // print(jsonData);
       final id = jsonData['user']['id'];
       final email = jsonData['user']['email'];
       if (jsonData['success']) {
         setState(() {
           _isLoading = false;
           // sharedPreferences.setString("token", jsonData['token']);
-
+          Fluttertoast.showToast(
+              msg: jsonData['message'],
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              fontSize: 16.0);
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -267,14 +276,14 @@ class _LoginWidgetState extends State<LoginWidget> {
           //  Navigator.pushReplacementNamed(context, '/homePage');
         });
       } else {
-        return showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: Text(jsonData['message']),
-            );
-          },
-        );
+        return Fluttertoast.showToast(
+            msg: jsonData['message'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
     }
   }

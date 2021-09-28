@@ -18,7 +18,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // late int _selectedIndex;
   List<dynamic> btnState = [];
+  // ignore: prefer_typing_uninitialized_variables
   late final userid;
+  // ignore: prefer_typing_uninitialized_variables
   late final email;
   bool isLiked = false;
   final double size = 20;
@@ -70,7 +72,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final Map argument = ModalRoute.of(context)!.settings.arguments as Map;
     final userid = argument['id'].toString();
-    print(userid);
+    // print(userid);
+    // ignore: unused_local_variable
     final email = argument['email'].toString();
     //print(userid + " =" + email);
 
